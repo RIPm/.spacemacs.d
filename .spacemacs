@@ -314,7 +314,6 @@ you should place your code here."
  '(ansi-color-names-vector
    ["#2e3436" "#a40000" "#4e9a06" "#c4a000" "#204a87" "#5c3566" "#729fcf" "#eeeeec"])
  '(eval-expression-print-level nil)
- '(exec-path-from-shell-variables (quote ("PATH" "MANPATH")))
  '(hl-sexp-background-color "#efebe9")
  '(js2-strict-missing-semi-warning nil))
 (custom-set-faces
