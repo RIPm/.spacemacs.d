@@ -62,6 +62,7 @@ values."
      sql
      yaml
      react
+     ;; rjsx
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -148,10 +149,11 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(sanityinc-tomorrow-eighties
+   dotspacemacs-themes '(
+                         sanityinc-tomorrow-eighties
                          zenburn
-                         solarized-dark
                          spacemacs-dark
+                         solarized-dark
                          spacemacs-light
                          solarized-light
                          leuven
@@ -318,7 +320,7 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil))
+   dotspacemacs-whitespace-cleanup 'all))
 
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
@@ -327,6 +329,20 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-c C->") 'mc/mark-all-like-this)
+  (global-set-key (kbd "C-=") 'er/expand-region))
+
+(defun dotspacemacs/user-config ()
+  "Configuration function for user code.
+This function is called at the very end of Spacemacs initialization after
+layers configuration.
+This is the place where most of your configurations should be done. Unless it is
+explicitly specified that a variable should be set before a package is loaded,
+you should place your code here."
+
   ;;自定义buffer头
   ;;显示更多的buffer标题信息
   (setq frame-title-format
@@ -334,24 +350,25 @@ before packages are loaded. If you are unsure, you should try in setting them in
           (:eval (if (buffer-file-name)
                      (abbreviate-file-name (buffer-file-name)) "%b"))))
 
-  ;;保存时自动清除行尾空格及文件结尾空行
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-c C->") 'mc/mark-all-like-this)
-  (global-set-key (kbd "C-=") 'er/expand-region)
-
-  ;; 搜索和替换区分大小写
-  (setq-default case-fold-search nil)
-  (setq-default case-replace nil)
-
   ;; 镜像
   (setq configuration-layer--elpa-archives
         '(("melpa-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
           ("org-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
           ("gnu-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
           ("marmalade-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")))
+
+  (editorconfig-mode t)
+
+  (global-evil-mc-mode  t)
+
+  ;; consistent spaces
+  (with-eval-after-load 'web-mode
+    (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
+    (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
+    (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil)))
+
+  ;; append web-mode support for file suffix
+  ;; (add-to-list 'auto-mode-alist '("\\.swig\\'" . web-mode))
 
   ;; consistent spaces
   (setq-default
@@ -363,21 +380,19 @@ before packages are loaded. If you are unsure, you should try in setting them in
    web-mode-markup-indent-offset 4
    web-mode-css-indent-offset 4
    web-mode-code-indent-offset 4
-   web-mode-attr-indent-offset 4)
+   web-mode-attr-indent-offset 4))
 
-  ;; consistent spaces
-  (with-eval-after-load 'web-mode
-    (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
-    (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
-    (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil)))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(helm-ag-base-command "rg --vimgrep --no-heading --smart-case")
+ '(flycheck-javascript-flow-args (quote ("--respect-pragma"))))
 
-  (add-to-list 'auto-mode-alist '("\\.swig\\'" . web-mode)))
-
-(defun dotspacemacs/user-config ()
-  "Configuration function for user code.
-This function is called at the very end of Spacemacs initialization after
-layers configuration.
-This is the place where most of your configurations should be done. Unless it is
-explicitly specified that a variable should be set before a package is loaded,
-you should place your code here."
-  (editorconfig-mode t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
