@@ -133,7 +133,7 @@ Each entry is either:
       (with-eval-after-load 'rjsx-mode
         (add-hook 'rjsx-mode-local-vars-hook 'flow-minor-enable-automatically)
         (add-to-list 'spacemacs-jump-handlers-js2-mode 'flow-minor-jump-to-definition))
-       )
+      )
     :config
     (progn
       (spacemacs/declare-prefix-for-mode 'flow-minor-mode "mf" "flow")
@@ -198,7 +198,12 @@ Each entry is either:
   (spacemacs/js-doc-set-key-bindings 'rjsx-mode))
 
 (defun rjsx/post-init-evil-matchit ()
-  (add-hook 'rjsx-mode-local-vars-hook 'evil-matchit-mode))
+  (add-hook `rjsx-mode-local-vars-hook `turn-on-evil-matchit-mode)
+  (with-eval-after-load 'evil-matchit
+    (plist-put evilmi-plugins 'rjsx-mode
+               '((evilmi-simple-get-tag evilmi-simple-jump)
+                 (evilmi-javascript-get-tag evilmi-javascript-jump)
+                 (evilmi-html-get-tag evilmi-html-jump)))))
 
 (defun rjsx/post-init-tern ()
   (add-hook 'rjsx-mode-hook 'tern-mode)
