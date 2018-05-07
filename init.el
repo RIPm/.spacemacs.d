@@ -330,19 +330,6 @@ executes.
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
 
-  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-c C->") 'mc/mark-all-like-this)
-  (global-set-key (kbd "C-=") 'er/expand-region))
-
-(defun dotspacemacs/user-config ()
-  "Configuration function for user code.
-This function is called at the very end of Spacemacs initialization after
-layers configuration.
-This is the place where most of your configurations should be done. Unless it is
-explicitly specified that a variable should be set before a package is loaded,
-you should place your code here."
-
   ;;自定义buffer头
   ;;显示更多的buffer标题信息
   (setq frame-title-format
@@ -356,6 +343,19 @@ you should place your code here."
           ("org-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
           ("gnu-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
           ("marmalade-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")))
+
+  ;; (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  ;; (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  ;; (global-set-key (kbd "C-c C->") 'mc/mark-all-like-this)
+  (global-set-key (kbd "C-=") 'er/expand-region))
+
+(defun dotspacemacs/user-config ()
+  "Configuration function for user code.
+This function is called at the very end of Spacemacs initialization after
+layers configuration.
+This is the place where most of your configurations should be done. Unless it is
+explicitly specified that a variable should be set before a package is loaded,
+you should place your code here."
 
   (editorconfig-mode t)
 
@@ -374,6 +374,7 @@ you should place your code here."
   (setq-default
    ;; js2-mode
    js2-basic-offset 4
+   sgml-basic-offset 4
    js2-strict-missing-semi-warning nil
    ;; web-mode
    css-indent-offset 4
