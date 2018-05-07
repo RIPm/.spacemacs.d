@@ -52,8 +52,8 @@ values."
      html
      (javascript :variables
                  tern-command '("node" "C:/Program Files/nodejs/node_modules/tern/bin/tern"))
-     (flow-type :variables
-                flow-type-no-auto-start 'process)
+     ;; (flow-type :variables
+     ;;            flow-type-no-auto-start 'process)
      purescript
      typescript
      python
@@ -61,8 +61,8 @@ values."
      rust
      sql
      yaml
-     react
-     ;; rjsx
+     (rjsx :variables
+           flow-type-no-auto-start 'process)
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -387,8 +387,11 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(flycheck-javascript-flow-args (quote ("--respect-pragma")))
  '(helm-ag-base-command "rg --vimgrep --no-heading --smart-case")
- '(flycheck-javascript-flow-args (quote ("--respect-pragma"))))
+ '(package-selected-packages
+   (quote
+    (packed evil helm helm-core avy projectile async org-plus-contrib hydra flow-js2-mode color-theme-sanityinc-tomorrow yapfify yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org tide tern-auto-complete tagedit sql-indent spaceline smeargle slim-mode shell-pop scss-mode sass-mode rjsx-mode restart-emacs rainbow-delimiters racer rabbit-js2-mode pyvenv pytest pyenv-mode py-isort pug-mode psci psc-ide popwin pip-requirements phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el paradox pandoc-mode ox-pandoc orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc intero indent-guide hy-mode hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-hoogle helm-gtags helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md ggtags fuzzy flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-haskell flycheck-flow flycheck-elm flx-ido flow-minor-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help erlang emmet-mode elm-mode elisp-slime-nav editorconfig dumb-jump drupal-mode disaster diminish diff-hl define-word cython-mode company-web company-tern company-statistics company-ghci company-ghc company-flow company-cabal company-c-headers company-anaconda column-enforce-mode coffee-mode cmm-mode cmake-mode clean-aindent-mode clang-format cargo auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent add-node-modules-path adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
