@@ -330,12 +330,15 @@ executes.
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
 
-  ;;自定义buffer头
-  ;;显示更多的buffer标题信息
+  ;; 自定义buffer头
+  ;; 显示更多的buffer标题信息
   (setq frame-title-format
         '("" "R.I.P @"
           (:eval (if (buffer-file-name)
                      (abbreviate-file-name (buffer-file-name)) "%b"))))
+
+  ;; fixed `Cannot make side window the only window`
+  (setq helm-split-window-inside-p t)
 
   ;; 镜像
   (setq configuration-layer--elpa-archives
@@ -357,10 +360,12 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
+  ;; editorconfig-mode
   (editorconfig-mode t)
+  (spacemacs|hide-lighter editorconfig-mode)
 
   ;; custom evil-mc-mode
-  (defun evil-mc-mode-set (func)
+  (defun evil-mc-mode-set ()
     (global-evil-mc-mode t)
     (spacemacs|diminish evil-mc-mode)
 
@@ -374,10 +379,8 @@ you should place your code here."
     (fset 'evil-mc-clear-state
           "gru\C-s\C-g")
 
-    (progn
-      (custom-evil-mc-show-mode-line)
-      (evil-global-set-key 'normal (kbd "grd") 'evil-mc-clear-state)
-      (funcall func)))
+    (custom-evil-mc-show-mode-line)
+    (evil-global-set-key 'normal (kbd "grd") 'evil-mc-clear-state))
 
   ;; custom spaceline
   (defun custom-spaceline-spacemacs-theme (&rest additional-segments)
@@ -396,7 +399,9 @@ ADDITIONAL-SEGMENTS are inserted on the right, between `global' and
              :priority 5)
            additional-segments))
 
-  (evil-mc-mode-set 'custom-spaceline-spacemacs-theme)
+  (progn
+    (evil-mc-mode-set)
+    (custom-spaceline-spacemacs-theme))
 
   ;; consistent spaces
   (with-eval-after-load 'web-mode
