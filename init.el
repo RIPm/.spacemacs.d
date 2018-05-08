@@ -359,7 +359,44 @@ you should place your code here."
 
   (editorconfig-mode t)
 
-  (global-evil-mc-mode  t)
+  ;; custom evil-mc-mode
+  (defun evil-mc-mode-set (func)
+    (global-evil-mc-mode t)
+    (spacemacs|diminish evil-mc-mode)
+
+    (defun custom-evil-mc-show-mode-line ()
+      (spaceline-define-segment emc
+        "Show evil-mc cursor count in modeline"
+        (when (> (evil-mc-get-cursor-count) 1)
+          (format "EMC:%d" (evil-mc-get-cursor-count)))
+        ))
+
+    (fset 'evil-mc-clear-state
+          "gru\C-s\C-g")
+
+    (progn
+      (custom-evil-mc-show-mode-line)
+      (evil-global-set-key 'normal (kbd "grd") 'evil-mc-clear-state)
+      (funcall func)))
+
+  ;; custom spaceline
+  (defun custom-spaceline-spacemacs-theme (&rest additional-segments)
+    "Install the modeline used by Spacemacs.
+ADDITIONAL-SEGMENTS are inserted on the right, between `global' and
+`buffer-position'."
+    (apply 'spaceline--theme
+           '((persp-name
+              workspace-number
+              window-number
+              emc)
+             :fallback evil-state
+             :face highlight-face
+             :priority 0)
+           '((buffer-modified buffer-size buffer-id remote-host)
+             :priority 5)
+           additional-segments))
+
+  (evil-mc-mode-set 'custom-spaceline-spacemacs-theme)
 
   ;; consistent spaces
   (with-eval-after-load 'web-mode
@@ -399,4 +436,5 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(iedit-occurrence ((t (:inherit default :background "steel blue"))))
+ '(js2-type-annotation ((t (:inherit font-lock-type-face :foreground "DarkSlateGray4")))))
