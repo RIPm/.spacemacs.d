@@ -91,9 +91,9 @@ Each entry is either:
 
 ;; packages.el ends here
 (defun rjsx/init-rabbit-js2-mode()
-  (defgroup rjsx-mode nil
-    "Support for JSX."
-    :group 'rabbit-js2-mode))
+  (defgroup rabbit-js2-mode nil
+    "Better support javascript syntax"
+    :group 'js2-mode))
 
 (defun rjsx/init-rjsx-mode()
   (use-package rjsx-mode
