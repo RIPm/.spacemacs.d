@@ -136,12 +136,13 @@ Each entry is either:
       )
     :config
     (progn
-      (spacemacs/declare-prefix-for-mode 'flow-minor-mode "mf" "flow")
+      (spacemacs/declare-prefix-for-mode 'flow-minor-mode "mf" "flow-type")
       (spacemacs/set-leader-keys-for-minor-mode 'flow-minor-mode
-        "fd" 'flow-minor-jump-to-definition
-        "fc" 'flow-minor-status
+        "fd" 'flow-minor-eldoc-documentation-function
+        "fg" 'flow-minor-jump-to-definition
+        "fs" 'flow-minor-status
         "ft" 'flow-minor-type-at-pos
-        "fc" 'flow-minor-coverage
+        "fC" 'flow-minor-coverage
         "ff" 'flow-minor-suggest))))
 
 (defun rjsx/init-company-flow ()
