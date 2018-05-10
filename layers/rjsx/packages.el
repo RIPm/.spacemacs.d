@@ -99,15 +99,17 @@ Each entry is either:
   (use-package rjsx-mode
     :defer t
     :init
-    (add-hook 'rjsx-mode-hook 'spacemacs//rjsx-end-symbol-alignment)
-    ;;
+    ;; (add-hook 'rjsx-mode-hook 'spacemacs//rjsx-end-symbol-alignment)
+    ;; Temporary solution for comment jsx code
+    (add-hook 'rjsx-mode-hook (lambda ()
+                                (push '(?/ . ("{/*" . "*/}")) evil-surround-pairs-alist)))
     (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
-    (add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
-    (add-to-list 'auto-mode-alist '("\\.react.js\\'" . rjsx-mode))
-    (add-to-list 'auto-mode-alist '("\\index.android.js\\'" . rjsx-mode))
-    (add-to-list 'auto-mode-alist '("\\index.ios.js\\'" . rjsx-mode))
-    (add-to-list 'magic-mode-alist '("/\\*\\* @jsx React\\.DOM \\*/" . rjsx-mode))
-    (add-to-list 'magic-mode-alist '("^import React" . rjsx-mode))
+    ;; (add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
+    ;; (add-to-list 'auto-mode-alist '("\\.react.js\\'" . rjsx-mode))
+    ;; (add-to-list 'auto-mode-alist '("\\index.android.js\\'" . rjsx-mode))
+    ;; (add-to-list 'auto-mode-alist '("\\index.ios.js\\'" . rjsx-mode))
+    ;; (add-to-list 'magic-mode-alist '("/\\*\\* @jsx React\\.DOM \\*/" . rjsx-mode))
+    ;; (add-to-list 'magic-mode-alist '("^import React" . rjsx-mode))
     :config
     (progn
       ;; prefixes

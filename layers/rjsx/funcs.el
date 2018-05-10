@@ -18,12 +18,9 @@
 
 ;; rjsx-mode
 (defun spacemacs//rjsx-end-symbol-alignment ()
-  (defun react-tag-fix ()
-    (define-key evil-insert-state-map (kdb "C-d") nil))
-  (add-hook 'rjsx-mode-hook 'react-tag-fix)
-  (defadvice js-jsx-indent-line (after js-jsx-indent-line-after-hack activate)
+   (defadvice js-jsx-indent-line (after js-jsx-indent-line-after-hack activate)
     "Workaround sgml-mode and follow airbnb component style."
     rjsx-mode  (save-excursion
                  (beginning-of-line)
                  (if (looking-at-p "^ +\/?> *$")
-                     (delete-char sgml-basic-offset)))))
+                     (delete-char srgml-basic-offset)))))

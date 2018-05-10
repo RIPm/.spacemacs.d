@@ -52,8 +52,6 @@ values."
      html
      (javascript :variables
                  tern-command '("node" "C:/Program Files/nodejs/node_modules/tern/bin/tern"))
-     ;; (flow-type :variables
-     ;;            flow-type-no-auto-start 'process)
      purescript
      typescript
      python
