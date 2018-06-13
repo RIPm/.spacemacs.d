@@ -32,29 +32,23 @@
   '(
     (
      ;; Support flow parse from `HairyRabbit/js2-mode`
-     rabbit-js2-mode
-     :location (recipe
-                :repo "HairyRabbit/js2-mode"
-                :fetcher github)
-     :toggle (configuration-layer/package-usedp 'js2-mode))
+     rabbit-js2-mode :location (recipe
+                                :repo "HairyRabbit/js2-mode"
+                                :fetcher github)
+                     :toggle (configuration-layer/package-usedp 'js2-mode))
     ;; Support jsx
     rjsx-mode
     ;; Support flow command
-    (flow-minor-mode
-     :location (recipe
-                :fetcher github
-                :repo "an-sh/flow-minor-mode"))
+    flow-minor-mode
     company
     company-tern
-    (company-flow
-     :toggle (configuration-layer/package-usedp 'company))
+    (company-flow :toggle (configuration-layer/package-usedp 'company))
     emmet-mode
     evil-matchit
     ggtags
     helm-gtags
     flycheck
-    (flycheck-flow
-     :toggle (configuration-layer/package-usedp 'flycheck))
+    (flycheck-flow :toggle (configuration-layer/package-usedp 'flycheck))
     js-doc
     js2-refactor
     tern
