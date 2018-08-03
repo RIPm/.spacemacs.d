@@ -50,8 +50,9 @@ values."
      haskell
      erlang
      html
-     (javascript :variables
-                 tern-command '("node" "C:/Program Files/nodejs/node_modules/tern/bin/tern"))
+     ;; (javascript :variables
+     ;;             tern-command '("node" "C:/Program Files/nodejs/node_modules/tern/bin/tern"))
+     javascript
      purescript
      typescript
      python
@@ -72,13 +73,15 @@ values."
                       version-control-diff-tool 'diff-hl
                       version-control-diff-side 'left
                       version-control-global-margin t)
+     revil
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(editorconfig
-                                      tern-auto-complete)
+                                      tern-auto-complete
+                                      xref-js2)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -190,7 +193,7 @@ values."
    ;; and TAB or <C-m> and RET.
    ;; In the terminal, these pairs are generally indistinguishable, so this only
    ;; works in the GUI. (default nil)
-   dotspacemacs-distinguish-gui-tab nil
+   dotspacemacs-distinguish-gui-tab t
    ;; If non nil `Y' is remapped to `y$' in Evil states. (default nil)
    dotspacemacs-remap-Y-to-y$ nil
    ;; If non-nil, the shift mappings `<' and `>' retain visual state if used
@@ -338,9 +341,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
           (:eval (if (buffer-file-name)
                      (abbreviate-file-name (buffer-file-name)) "%b"))))
 
-  ;; fixed `Cannot make side window the only window`
-  (setq helm-split-window-inside-p t)
-
   ;; 镜像
   (setq configuration-layer--elpa-archives
         '(("melpa-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
@@ -348,10 +348,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
           ("gnu-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
           ("marmalade-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")))
 
-  ;; (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-  ;; (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-  ;; (global-set-key (kbd "C-c C->") 'mc/mark-all-like-this)
-  (global-set-key (kbd "C-=") 'er/expand-region))
+  ;; fixed `Cannot make side window the only window`
+  (setq helm-split-window-inside-p t)
+
+  (setenv "SSH_ASKPASS" "git-gui--askpass"))
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -365,44 +365,8 @@ you should place your code here."
   (editorconfig-mode t)
   (spacemacs|hide-lighter editorconfig-mode)
 
-  ;; custom evil-mc-mode
-  (defun evil-mc-mode-set ()
-    (global-evil-mc-mode t)
-    (spacemacs|diminish evil-mc-mode)
-
-    (defun custom-evil-mc-show-mode-line ()
-      (spaceline-define-segment emc
-        "Show evil-mc cursor count in modeline"
-        (when (> (evil-mc-get-cursor-count) 1)
-          (format "EMC:%d" (evil-mc-get-cursor-count)))
-        ))
-
-    (fset 'evil-mc-clear-state
-          "gru\C-s\C-g")
-
-    (custom-evil-mc-show-mode-line)
-    (evil-global-set-key 'normal (kbd "grd") 'evil-mc-clear-state))
-
-  ;; custom spaceline
-  (defun custom-spaceline-spacemacs-theme (&rest additional-segments)
-    "Install the modeline used by Spacemacs.
-ADDITIONAL-SEGMENTS are inserted on the right, between `global' and
-`buffer-position'."
-    (apply 'spaceline--theme
-           '((persp-name
-              workspace-number
-              window-number
-              emc)
-             :fallback evil-state
-             :face highlight-face
-             :priority 0)
-           '((buffer-modified buffer-size buffer-id remote-host)
-             :priority 5)
-           additional-segments))
-  ;; extend for mc mod
-  (progn
-    (evil-mc-mode-set)
-    (custom-spaceline-spacemacs-theme))
+  ;; powerline
+  (setq powerline-default-separator 'zigzag)
 
   ;; consistent spaces
   (with-eval-after-load 'web-mode
@@ -410,21 +374,17 @@ ADDITIONAL-SEGMENTS are inserted on the right, between `global' and
     (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
     (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil)))
 
+  ;; xref
+  (add-hook 'js2-mode-hook (lambda ()
+                             (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+
   ;; append web-mode support for file suffix
   ;; (add-to-list 'auto-mode-alist '("\\.swig\\'" . web-mode))
 
-  ;; consistent spaces
-  (setq-default
-   ;; js2-mode
-   js2-basic-offset 4
-   sgml-basic-offset 4
-   js2-strict-missing-semi-warning nil
-   ;; web-mode
-   css-indent-offset 4
-   web-mode-markup-indent-offset 4
-   web-mode-css-indent-offset 4
-   web-mode-code-indent-offset 4
-   web-mode-attr-indent-offset 4))
+  ;; (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  ;; (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  ;; (global-set-key (kbd "C-c C->") 'mc/mark-all-like-this)
+  (global-set-key (kbd "C-=") 'er/expand-region))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -433,15 +393,22 @@ ADDITIONAL-SEGMENTS are inserted on the right, between `global' and
  ;; If there is more than one, they won't work right.
  '(flycheck-javascript-flow-args (quote ("--respect-pragma")))
  '(helm-ag-base-command "rg --vimgrep --no-heading --smart-case")
- '(package-selected-packages
-   (quote
-    (ahk-mode org-category-capture highlight haskell-mode git-commit ghub ayu-mirage-theme ayu-theme hive-theme typescript-mode anaconda-mode smartparens flycheck skewer-mode simple-httpd markdown-mode magit-popup yasnippet php-mode pythonic js2-mode bind-key lua-mode magit packed evil helm helm-core avy projectile async org-plus-contrib hydra flow-js2-mode color-theme-sanityinc-tomorrow yapfify yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org tide tern-auto-complete tagedit sql-indent spaceline smeargle slim-mode shell-pop scss-mode sass-mode rjsx-mode restart-emacs rainbow-delimiters racer rabbit-js2-mode pyvenv pytest pyenv-mode py-isort pug-mode psci psc-ide popwin pip-requirements phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el paradox pandoc-mode ox-pandoc orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc intero indent-guide hy-mode hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-hoogle helm-gtags helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md ggtags fuzzy flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-haskell flycheck-flow flycheck-elm flx-ido flow-minor-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help erlang emmet-mode elm-mode elisp-slime-nav editorconfig dumb-jump drupal-mode disaster diminish diff-hl define-word cython-mode company-web company-tern company-statistics company-ghci company-ghc company-flow company-cabal company-c-headers company-anaconda column-enforce-mode coffee-mode cmm-mode cmake-mode clean-aindent-mode clang-format cargo auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent add-node-modules-path adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+ '(js2-basic-offset 4)
+ '(sgml-basic-offset 4)
+ '(js2-strict-missing-semi-warning nil)
+ ;; web-mode
+ '(css-indent-offset 4)
+ '(web-mode-markup-indent-offset 4)
+ '(web-mode-css-indent-offset 4)
+ '(web-mode-code-indent-offset 4)
+ '(web-mode-attr-indent-offset 4))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(epe-git-face ((t (:inherit font-lock-constant-face :foreground "#99cc99"))))
  '(iedit-occurrence ((t (:inherit default :background "steel blue"))))
  '(js2-primitive-type ((t (:foreground "bisque4"))))
  '(js2-type-annotation ((t (:inherit font-lock-type-face :foreground "bisque4")))))
