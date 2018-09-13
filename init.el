@@ -50,8 +50,6 @@ values."
      haskell
      erlang
      html
-     ;; (javascript :variables
-     ;;             tern-command '("node" "C:/Program Files/nodejs/node_modules/tern/bin/tern"))
      javascript
      purescript
      typescript
@@ -183,7 +181,7 @@ values."
    dotspacemacs-emacs-leader-key "M-m"
    ;; Major mode leader key is a shortcut key which is the equivalent of
    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
-   dotspacemacs-major-mode-leader-key ","
+   dotspacemacs-major-mode-leader-key nil
    ;; Major mode leader key accessible in `emacs state' and `insert state'.
    ;; (default "C-M-m")
    dotspacemacs-major-mode-emacs-leader-key "C-M-m"
@@ -293,7 +291,8 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers '(:relative t
+                               :size-limit-kb 1000)
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -374,14 +373,10 @@ you should place your code here."
     (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
     (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil)))
 
-  ;; xref
-  (add-hook 'js2-mode-hook (lambda ()
-                             (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+  ;; shell support ansi color
+  (add-hook 'eshell-preoutput-filter-functions
+            'ansi-color-filter-apply)
 
-  ;; append web-mode support for file suffix
-  ;; (add-to-list 'auto-mode-alist '("\\.swig\\'" . web-mode))
-
-  ;; (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
   ;; (global-set-key (kbd "C->") 'mc/mark-next-like-this)
   ;; (global-set-key (kbd "C-c C->") 'mc/mark-all-like-this)
   (global-set-key (kbd "C-=") 'er/expand-region))
@@ -391,17 +386,19 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(css-indent-offset 4)
  '(flycheck-javascript-flow-args (quote ("--respect-pragma")))
+ '(fringe-mode 6 nil (fringe))
+ '(global-vi-tilde-fringe-mode nil)
  '(helm-ag-base-command "rg --vimgrep --no-heading --smart-case")
  '(js2-basic-offset 4)
- '(sgml-basic-offset 4)
  '(js2-strict-missing-semi-warning nil)
- ;; web-mode
- '(css-indent-offset 4)
- '(web-mode-markup-indent-offset 4)
- '(web-mode-css-indent-offset 4)
+ '(linum-relative-current-symbol "_")
+ '(sgml-basic-offset 4)
+ '(web-mode-attr-indent-offset 4)
  '(web-mode-code-indent-offset 4)
- '(web-mode-attr-indent-offset 4))
+ '(web-mode-css-indent-offset 4)
+ '(web-mode-markup-indent-offset 4))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
