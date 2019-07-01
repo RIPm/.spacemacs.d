@@ -50,6 +50,7 @@ values."
      haskell
      erlang
      html
+     rjava
      javascript
      purescript
      typescript
@@ -292,7 +293,7 @@ values."
    ;;   :size-limit-kb 1000)
    ;; (default nil)
    dotspacemacs-line-numbers '(:relative t
-                               :size-limit-kb 1000)
+                                         :size-limit-kb 1000)
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -350,6 +351,9 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; fixed `Cannot make side window the only window`
   (setq helm-split-window-inside-p t)
 
+  (setq tramp-ssh-controlmaster-options
+        "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
+
   (setenv "SSH_ASKPASS" "git-gui--askpass"))
 
 (defun dotspacemacs/user-config ()
@@ -377,6 +381,20 @@ you should place your code here."
   (add-hook 'eshell-preoutput-filter-functions
             'ansi-color-filter-apply)
 
+  ;; fixed bug for typescript jump to definition
+  (add-to-list 'spacemacs-jump-handlers-typescript-mode '(tide-jump-to-definition :async t))
+
+  ;; fixed bug for tsx
+  (with-eval-after-load 'web-mode
+            (lambda ()
+              (when (and (buffer-file-name)
+                         (string-equal "tsx" (file-name-extension (buffer-file-name))))
+                (when (configuration-layer/package-usedp 'auto-completion)
+                  (company-mode-on))
+                (spacemacs|define-jump-handlers web-mode)
+                (add-to-list 'spacemacs-jump-handlers-web-mode '(tide-jump-to-definition :async t))
+                )))
+
   ;; (global-set-key (kbd "C->") 'mc/mark-next-like-this)
   ;; (global-set-key (kbd "C-c C->") 'mc/mark-all-like-this)
   (global-set-key (kbd "C-=") 'er/expand-region))
@@ -386,14 +404,14 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(css-indent-offset 4)
  '(flycheck-javascript-flow-args (quote ("--respect-pragma")))
  '(fringe-mode 6 nil (fringe))
  '(global-vi-tilde-fringe-mode nil)
  '(helm-ag-base-command "rg --vimgrep --no-heading --smart-case")
- '(js2-basic-offset 4)
  '(js2-strict-missing-semi-warning nil)
  '(linum-relative-current-symbol "_")
+ '(js2-basic-offset 4)
+ '(css-indent-offset 4)
  '(sgml-basic-offset 4)
  '(web-mode-attr-indent-offset 4)
  '(web-mode-code-indent-offset 4)
