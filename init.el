@@ -67,7 +67,6 @@ This function should only modify configuration layer settings."
      multiple-cursors
      (shell :variables
             shell-default-shell 'eshell
-            shell-protect-eshell-prompt nil
             shell-enable-smart-eshell t
             shell-default-height 30
             shell-default-position 'bottom)
@@ -253,7 +252,7 @@ It should only modify the values of Spacemacs settings."
                          spacemacs-light
                          solarized-light
                          leuven
-                         monoka)
+                         monokai)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
