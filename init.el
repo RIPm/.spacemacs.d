@@ -75,6 +75,7 @@ This function should only modify configuration layer settings."
             gtags-enable-by-default t)
      spell-checking
      syntax-checking
+     revil
      (version-control :variables
                       version-control-diff-tool 'diff-hl
                       version-control-diff-side 'left
@@ -577,3 +578,18 @@ before packages are loaded."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+ 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(epe-git-face ((t (:inherit font-lock-constant-face :foreground "#99cc99"))))
+ '(iedit-occurrence ((t (:inherit default :background "steel blue"))))
+ '(js2-primitive-type ((t (:foreground "bisque4"))))
+ '(js2-type-annotation ((t (:inherit font-lock-type-face :foreground "bisque4"))))))

@@ -31,7 +31,6 @@
 
 (defconst revil-packages
   '(evil
-    evil-mc
     evil-multiedit
     evil-args)
   "The list of Lisp packages required by the revil layer.
@@ -70,17 +69,6 @@ Each entry is either:
 
 (defun revil/post-init-evil()
   (define-key evil-motion-state-map (kbd "M-i") 'helm-swoop-from-evil-search))
-
-(defun revil/post-init-evil-mc()
-  (global-evil-mc-mode t)
-  ;; (spacemacs|diminish evil-mc-mode)
-
-  ;; (setq evil-mc-mode-line-text-inverse-colors nil)
-  ;; (setq evil-mc-mode-line-text-cursor-color t)
-
-  (fset 'evil-mc-clear-state
-        "gru\C-s\C-g")
-  (define-key evil-normal-state-map "grd" 'evil-mc-clear-state))
 
 (defun revil/post-init-evil-args()
   (define-key evil-normal-state-map "]a" 'evil-forward-arg)
