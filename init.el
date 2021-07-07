@@ -53,11 +53,15 @@ This function should only modify configuration layer settings."
      haskell
      erlang
      html
-     (java :variables java-backend 'meghanada)
+     (java :variables
+           java-backend 'meghanada)
      (javascript :variables
                  javascript-backend 'tern)
+     (typescript :variables
+                 typescript-backend 'tide
+                 tide-tsserver-executable "C:\\Program Files\\nodejs\\node_modules\\typescript\\bin\\tsserver"
+                 )
      purescript
-     typescript
      python
      c-c++
      rust
@@ -85,7 +89,8 @@ This function should only modify configuration layer settings."
                treemacs-use-git-mode 'deferred
                treemacs-use-filewatch-mode t
                ;; treemacs-deferred-git-apply-delay 2
-               ))
+               )
+     )
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -98,7 +103,8 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(editorconfig
                                       tern-auto-complete
-                                      xref-js2)
+                                      ;; xref-js2
+                                      )
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -407,6 +413,10 @@ It should only modify the values of Spacemacs settings."
    ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
 
+   ;; Show the scroll bar while scrolling. The auto hide time can be configured
+   ;; by setting this variable to a number. (default t)
+   dotspacemacs-scroll-bar-while-scrolling nil
+
    ;; Control line numbers activation.
    ;; If set to `t', `relative' or `visual' then line numbers are enabled in all
    ;; `prog-mode' and `text-mode' derivatives. If set to `relative', line
@@ -425,11 +435,7 @@ It should only modify the values of Spacemacs settings."
    ;;   :size-limit-kb 1000)
    ;; When used in a plist, `visual' takes precedence over `relative'.
    ;; (default nil)
-   dotspacemacs-line-numbers `(
-                               :visual t
-                               :size-limit-kb 1000
-                               )
-
+   dotspacemacs-line-numbers nil
    ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -448,7 +454,7 @@ It should only modify the values of Spacemacs settings."
    ;; emphasis the current one). (default 'all)
    dotspacemacs-highlight-delimiters 'all
 
-   ;; If non-nil, start an Emacs server if one is not already running.
+   ;; If non-nil, start an Emacs server if one is not already running.
    ;; (default nil)
    dotspacemacs-enable-server nil
 
@@ -523,7 +529,10 @@ It should only modify the values of Spacemacs settings."
 
    ;; If nil the home buffer shows the full path of agenda items
    ;; and todos. If non nil only the file name is shown.
-   dotspacemacs-home-shorten-agenda-source nil))
+   dotspacemacs-home-shorten-agenda-source nil
+
+   ;; If non-nil then byte-compile some of Spacemacs files.
+   dotspacemacs-byte-compile nil))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -575,7 +584,15 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
- 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(evil-want-Y-yank-to-eol nil)
+ '(package-selected-packages
+   (quote
+    (zenburn-theme yasnippet-snippets yapfify yaml-mode xterm-color ws-butler writeroom-mode winum which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package unfill undo-tree treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toml-mode toc-org tide tern-auto-complete terminal-here tagedit symon symbol-overlay string-inflection sql-indent sphinx-doc spaceline-all-the-icons solarized-theme smeargle slim-mode shell-pop scss-mode sass-mode ron-mode restart-emacs rainbow-delimiters racer pytest pyenv-mode py-isort pug-mode psci psc-ide prettier-js popwin poetry pippel pipenv pip-requirements phpunit phpcbf php-extras php-auto-yasnippets pcre2el password-generator paradox pandoc-mode ox-pandoc overseer orgit org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-cliplink org-brain open-junk-file nodejs-repl nameless mwim mvn multi-term move-text monokai-theme mmm-mode meghanada maven-test-mode markdown-toc magit-svn magit-section magit-gitflow macrostep lsp-haskell lorem-ipsum livid-mode live-py-mode link-hint json-navigator json-mode js2-refactor js-doc indent-guide importmagic impatient-mode hybrid-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-ls-git helm-hoogle helm-gtags helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets groovy-mode groovy-imports google-translate google-c-style golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md ggtags geben fuzzy font-lock+ flyspell-correct-helm flycheck-ycmd flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-package flycheck-haskell flycheck-elsa flycheck-elm flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-multiedit evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help erlang emr emmet-mode elm-test-runner elm-mode elisp-slime-nav editorconfig dumb-jump drupal-mode dotenv-mode disaster dired-quick-sort diminish diff-hl devdocs define-word dante cython-mode cpp-auto-include company-ycmd company-web company-rtags company-phpactor company-php company-cabal company-c-headers company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow cmm-mode clean-aindent-mode centered-cursor-mode cargo browse-at-remote blacken auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile attrap aggressive-indent ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -584,4 +601,5 @@ This function is called at the very end of Spacemacs initialization."
  '(epe-git-face ((t (:inherit font-lock-constant-face :foreground "#99cc99"))))
  '(iedit-occurrence ((t (:inherit default :background "steel blue"))))
  '(js2-primitive-type ((t (:foreground "bisque4"))))
- '(js2-type-annotation ((t (:inherit font-lock-type-face :foreground "bisque4"))))))
+ '(js2-type-annotation ((t (:inherit font-lock-type-face :foreground "bisque4")))))
+)
